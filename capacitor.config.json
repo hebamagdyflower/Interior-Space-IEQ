@@ -1,0 +1,14 @@
+{
+  "appId": "com.hebamagdy.hallieqexplorer",
+  "appName": "Hall IEQ Explorer",
+  "webDir": "www",
+  "backgroundColor": "#eef2f1",
+  "android": {
+    "allowMixedContent": false,
+    "captureInput": true
+  },
+  "ios": {
+    "contentInset": "always",
+    "scrollEnabled": true
+  }
+}

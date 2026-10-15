@@ -1,0 +1,21 @@
+{
+  "name": "hall-ieq-explorer",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Hall IEQ Explorer: energy, thermal comfort, daylight and CO2 of drawing halls, built on the simulations of a PhD thesis (Cairo University).",
+  "scripts": {
+    "www": "python tools/build_www.py",
+    "res-android": "python tools/android_res.py android",
+    "sync": "cap sync",
+    "android": "cap open android",
+    "ios": "cap open ios"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.5.3",
+    "@capacitor/core": "^8.5.3",
+    "@capacitor/ios": "^8.5.3"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.5.3"
+  }
+}

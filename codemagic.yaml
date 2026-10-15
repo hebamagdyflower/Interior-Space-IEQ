@@ -1,0 +1,39 @@
+# Codemagic (cloud Mac) build of the Hall IEQ Explorer iOS app, uploaded to App Store Connect / TestFlight.
+# Before the first run, the Apple account holder must:
+#   1. be enrolled in the Apple Developer Program;
+#   2. create the app record in App Store Connect (bundle ID com.hebamagdy.hallieqexplorer);
+#   3. create an App Store Connect API key (Users and Access > Integrations > App Store Connect API, role App Manager)
+#      and add it in Codemagic (Team settings > Integrations > Developer Portal) under the name used below.
+# Codemagic then creates the signing certificate and provisioning profile itself (automatic code signing).
+workflows:
+  ios-release:
+    name: Hall IEQ Explorer - iOS App Store
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: Hall IEQ Explorer ASC key
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.hebamagdy.hallieqexplorer
+      node: 22
+      xcode: latest
+    scripts:
+      - name: Install Capacitor
+        script: npm install
+      - name: Copy the web app into the iOS project
+        script: npx cap sync ios
+      - name: Apply the signing profiles
+        script: xcode-project use-profiles
+      - name: Set the build number (must rise with every upload)
+        script: |
+          sed -i '' "s/CURRENT_PROJECT_VERSION = [0-9]*;/CURRENT_PROJECT_VERSION = $BUILD_NUMBER;/g" ios/App/App.xcodeproj/project.pbxproj
+      - name: Build the .ipa
+        script: xcode-project build-ipa --project ios/App/App.xcodeproj --scheme App
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
