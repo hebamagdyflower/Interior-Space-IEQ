@@ -28,6 +28,10 @@ workflows:
       - name: Set the build number (must rise with every upload)
         script: |
           sed -i '' "s/CURRENT_PROJECT_VERSION = [0-9]*;/CURRENT_PROJECT_VERSION = $BUILD_NUMBER;/g" ios/App/App.xcodeproj/project.pbxproj
+      - name: Check the scheme and fetch the Swift packages
+        script: |
+          xcodebuild -list -project ios/App/App.xcodeproj
+          xcodebuild -resolvePackageDependencies -project ios/App/App.xcodeproj -scheme App
       - name: Build the .ipa
         script: xcode-project build-ipa --project ios/App/App.xcodeproj --scheme App
     artifacts:
